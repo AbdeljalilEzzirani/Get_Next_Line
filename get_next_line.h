@@ -13,13 +13,15 @@
 #ifndef get_next_line_h
 # define get_next_line_h
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE
+#ifndef BUFFER_SIZE 1024
+# define BUFFER_SIZE 1024
 #endif
 
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <stddef.h>        //for size_t
+
 
 
 char		*get_next_line(int fd);
