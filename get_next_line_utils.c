@@ -10,94 +10,354 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+# include "get_next_line.h"
 
-static char	*diir_chii_fchiii(char *one, char *two, char *swap)
+void    *ft_memcpy(void *dst, const void *src,  size_t n)
 {
-	size_t				i;
-	size_t				j;
+        size_t                                  i;
+        char                                    *d;
+        const char                              *s;
 
-	i = 0;
-	j = 0;
-	while (one[i])
+        i = 0;
+        s = src;
+        d = dst;
+        if (s == NULL && d == NULL)
+                return (NULL);
+        while (i < n)
+        {
+                d[i] = s[i];
+                i++;
+        }
+        return (d);
+}
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*join;
+	size_t	len1;
+	size_t	len2;
+
+	if (!s1)
 	{
-		swap[i] = one[i];
-		i++;
+		s1 = malloc(1);
+		if (!(s1))
+			return (NULL);
+		s1[0] = 0;
 	}
-	while (two[j])
+	if (s1 || s2)
 	{
-		swap[j + i] = two[j];
-		j++;
+		len1 = ft_strlen(s1);
+		len2 = ft_strlen(s2);
+		join = (char *)malloc(len1 + len2 + 1);
+		if (!join)
+			return (join);
+		ft_memcpy(join, s1, len1);
+		ft_memcpy(join + len1, s2, len2 +1);
+		free(s1);
+		return (join);
 	}
-	swap[i + j] = '\0';
-	return (swap);
+	return (NULL);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char    *ft_strdup(const char *s1)
 {
-	char					*ptr;
-	size_t					totalenergie;
-	int						i;
-	int						j;
+        char                    *p;
+        int                             size;
 
-	if (s1 == NULL || s2 == NULL)
-		return (NULL);
-	i = ft_strlen(s1);
-	j = ft_strlen(s2);
-	totalenergie = (i + j);
-	ptr = (char *) malloc ((totalenergie + 1) * sizeof(char));
-	if (ptr == NULL)
-		return (NULL);
-	return (diir_chii_fchiii((char *)s1, (char *)s2, ptr));
+        size = ft_strlen(s1);
+        p = (char *) malloc (sizeof(char) * size + 1);
+        if (p == NULL)
+                return (NULL);
+        ft_memcpy(p, s1, size);
+        p[size] = '\0';
+        return (p);
 }
 
-size_t	ft_strlen(const char *s)
+size_t  ft_strlen(const char *s)
 {
-	size_t				i;
+        size_t                          i;
 
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
+        i = 0;
+        while (s[i])
+                i++;
+        return (i);
 }
 
-char    *ft_lkhedma(char *buf, int *ret)
+char    *ft_strchr(const char *s, int c)
 {
-    int         i;
-    char        *dest;
+        int             i;
 
-    i = 0;
-    while (buf && buf[i] != '\n')
-        i++;
-    dest = malloc(i + 1);
-    if (!dest)
+        if (s == NULL)
+                return (NULL);
+        i = 0;
+        while (s[i])
+        {
+                if ((char )c == s[i])
+                        return ((char *)&s[i]);
+                i++;
+        }
+        if (s[i] == (char )c)
+                return ((char *)&s[i]);
         return (NULL);
-    if (ft_strchr(buf, '\n') != 0)
-        *ret = 1;
-    i = 0;
-    while (buf && buf[i] && buf[i] != '\n')
-    {
-        dest[i] = buf[i];
-        i++;
-    }
-    dest[i] = 0;
-    return (dest);
-}// hena diiir strdup o noooood naaayed  
+}
 
-char    *ft_lkhedaamaa(char *buf)
+// static char     *join(char *one, char *two, char *swap)
+// {
+//         size_t                          i;
+//         size_t                          j;
+
+//         i = 0;
+//         j = 0;
+//         while (one[i])
+//         {
+//                 swap[i] = one[i];
+//                 i++;
+//         }
+//         while (two[j])
+//         {
+//                 swap[j + i] = two[j];
+//                 j++;
+//         }
+//         swap[i + j] = '\0';
+//         return (swap);
+// }
+
+// char    *ft_strjoin(char const *s1, char const *s2)
+// {
+//         char                                    *ptr;
+//         size_t                                  totalenergie;
+//         int                                             i;
+//         int                                             j;
+
+//         // if (s1 == NULL || s2 == NULL)
+//         //         return (NULL);
+//         i = ft_strlen(s1);
+//         j = ft_strlen(s2);
+//         totalenergie = (i + j);
+//         ptr = (char *) malloc ((totalenergie + 1) * sizeof(char));
+//         if (ptr == NULL)
+//                 return (NULL);
+//         return (join((char *)s1, (char *)s2, ptr));
+// }
+
+char    *ft_substr(char const *s, unsigned int start, size_t len)
 {
-    int             i;
-    int             j;
-    char            *dest;
+        char                                                    *p;
+        size_t                                                  i;
+        size_t                                                  j;
 
-    i = 0;
-    while (buf && buf[i] && buf[i] != '\n')
-    i++;
-    dest = malloc(sizeof(*dest) * (ft_strlen(buf) - i + 1));
-    if (!dest)
-        return (NULL);
-    j = 0;
-    while (buf && buf[++i])
-        dest[j++] = buf[++i];
-    dest[j] = 0;
-    return (dest);
-}	
+        i = 0;
+        if (s == NULL)
+                return (NULL);
+        j = ft_strlen(s);
+        if (start >= j)
+                return (ft_strdup(""));
+        if (len > j)
+                len = j - start;
+        p = (char *) malloc (sizeof(char) * len + 1);
+        if (p == NULL)
+                return (NULL);
+        while (i < len && s[start])
+        {
+                p[i] = s[start];
+                start++;
+                i++;
+        }
+        p[i] = '\0';
+        return (p);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// static char	*diir_chii_fchiii(char *one, char *two, char *swap)
+// {
+// 	size_t				i;
+// 	size_t				j;
+
+// 	i = 0;
+// 	j = 0;
+// 	while (one[i])
+// 	{
+// 		swap[i] = one[i];
+// 		i++;
+// 	}
+// 	while (two[j])
+// 	{
+// 		swap[j + i] = two[j];
+// 		j++;
+// 	}
+// 	swap[i + j] = '\0';
+// 	return (swap);
+// }
+
+// char	*ft_strjoin(char const *s1, char const *s2)
+// {
+// 	char					*ptr;
+// 	size_t					totalenergie;
+// 	int						i;
+// 	int						j;
+
+// 	if (s1 == NULL || s2 == NULL)
+// 		return (NULL);
+// 	i = ft_strlen(s1);
+// 	j = ft_strlen(s2);
+// 	totalenergie = (i + j);
+// 	ptr = (char *) malloc ((totalenergie + 1) * sizeof(char));
+// 	if (ptr == NULL)
+// 		return (NULL);
+// 	return (diir_chii_fchiii((char *)s1, (char *)s2, ptr));
+// }
+
+// size_t	ft_strlen(const char *s)
+// {
+// 	size_t				i;
+
+// 	i = 0;
+// 	while (s[i])
+// 		i++;
+// 	return (i);
+// }
+
+// char    *ft_lkhedma(char *buf, int *ret)
+// {
+//     int         i;
+//     char        *dest;
+
+//     i = 0;
+//     while (buf && buf[i] != '\n')
+//         i++;
+//     dest = malloc(i + 1);
+//     if (!dest)
+//         return (NULL);
+//     if (ft_strchr(buf, '\n') != 0)
+//         *ret = 1;
+//     i = 0;
+//     while (buf && buf[i] && buf[i] != '\n')
+//     {
+//         dest[i] = buf[i];
+//         i++;
+//     }
+//     dest[i] = 0;
+//     return (dest);
+// }// hena diiir strdup o noooood naaayed  
+
+// char    *ft_strdup(const char *s1)
+// {
+//         char                    *p;
+//         int                             size;
+
+//         size = ft_strlen(s1);
+//         p = (char *) malloc (sizeof(char) * size + 1);
+//         if (p == NULL)
+//                 return (NULL);
+//         ft_memcpy(p, s1, size);
+//         p[size] = '\0';
+//         return (p);
+// }
+
+// char    *ft_lkhedaamaa(char *buf)
+// {
+//     int             i;
+//     int             j;
+//     char            *dest;
+
+//     i = 0;
+//     while (buf && buf[i] && buf[i] != '\n')
+//     i++;
+//     dest = malloc(sizeof(*dest) * (ft_strlen(buf) - i + 1));
+//     if (!dest)
+//         return (NULL);
+//     j = 0;
+//     while (buf && buf[++i])
+//         dest[j++] = buf[++i];
+//     dest[j] = 0;
+//     return (dest);
+// }	

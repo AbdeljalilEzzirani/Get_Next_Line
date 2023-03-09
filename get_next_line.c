@@ -10,41 +10,189 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <unistd.h>
-# include <stdio.h>
-#include <fcntl.h>
+# include "get_next_line.h"
 
-char *get_next_line(int fd)
+static size_t  ft_newlen(const char *s)
 {
-	int			buffer;
-	char		*pointer;
+        size_t                          i;
 
-	buffer = 100;
-	if (buffer > 1024)
-		return (NULL);
-	while (buffer > 0)
+        i = 0;
+        while (s[i] && s[i] != '\n')
+                i++;
+        return (i);
+}
+
+static char *return_line(char *str)
+{
+	int i = 0;
+	char *tmp;
+
+	tmp = malloc(ft_newlen(str));
+	while(str[i] != '\0')
 	{
-		read(fd, pointer, 100);
-		buffer++;
+		if(str[i] == '\n')
+			break;
+		tmp[i] = str[i];
+		i++;
 	}
-	return (pointer);
+	tmp[i] = '\0';
+	return (tmp);
+}
+
+static char *shyata_d_lbuffer(char *str)
+{
+	int i = 0;
+	int j = 0;
+	char *tmp;
+
+
+	while(str[j] && str[j] != '\n')
+		j++;
+	j++;
+	tmp = malloc(ft_strlen(str) - ft_newlen(str) +1);
+	while(str[i] != '\0')
+	{
+		if(str[i] == '\n')
+			break;
+		tmp[i] = str[j];
+		i++;
+		j++;
+	}
+	tmp[i] = '\0';
+	return (tmp);
+}
+
+static int  ft_is_nline(char *s)
+{
+        int	i;
+
+        i = 0;
+		if (!s)
+			return (1);
+        while (s[i] && s[i] != '\n')
+		{
+                if(s[i] && s[i] == '\n')
+					return (0);
+				i++;
+		}
+		return (1);
+}
+
+
+char	*get_next_line(int fd)
+{
+	char		*buffer;
+	static char	*temp;
+	ssize_t		bytes;
+	char		*returned_line;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	buffer = malloc(BUFFER_SIZE +1);
+	if (!buffer)
+		return (NULL);
+	bytes = 1;
+	while (bytes != 0 && ft_is_nline(temp) == 1)
+	{
+		bytes = read(fd, buffer, BUFFER_SIZE);
+		if (bytes < 0)
+			return (free(buffer), free(temp), temp = NULL, NULL);
+		buffer[bytes] = 0;
+		temp = ft_strjoin(temp, buffer);
+	}
+	returned_line = return_line(temp);
+	temp = shyata_d_lbuffer(temp);
+	free(buffer);
+	return (returned_line);
 }
 
 
 int main ()
 {
 	int fd;
-	int counting;
-	char	sort;
-	fd  = open("hello world !!!!!?", O_RDWR);
-	// sort = get_next_line(fd);
-	// while (sort != '\0')
-	// {
-		printf ("%s \n",get_next_line(fd));
-	// 	sort++;
-	// }
-	close(fd);
+
+	fd  = open("check.txt", O_RDWR);
+	printf("%s\n", get_next_line(fd));
+	printf("%s\n", get_next_line(fd));
+	printf("%s\n", get_next_line(fd));
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
