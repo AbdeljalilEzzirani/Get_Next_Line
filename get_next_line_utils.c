@@ -12,6 +12,45 @@
 
 # include "get_next_line.h"
 
+static char     *join(char *one, char *two, char *swap)
+{
+        size_t                          i;
+        size_t                          j;
+
+        i = 0;
+        j = 0;
+        while (one[i])
+        {
+                swap[i] = one[i];
+                i++;
+        }
+        while (two[j])
+        {
+                swap[j + i] = two[j];
+                j++;
+        }
+        swap[i + j] = '\0';
+        return (swap);
+}
+
+char    *ft_strjoin(char const *s1, char const *s2)
+{
+        char                                    *ptr;
+        size_t                                  totalenergie;
+        int                                             i;
+        int                                             j;
+
+        if (s1 == NULL || s2 == NULL)
+                return (NULL);
+        i = ft_strlen(s1);
+        j = ft_strlen(s2);
+        totalenergie = (i + j);
+        ptr = (char *) malloc ((totalenergie + 1) * sizeof(char));
+        if (ptr == NULL)
+                return (NULL);
+        return (join((char *)s1, (char *)s2, ptr));
+}
+
 void    *ft_memcpy(void *dst, const void *src,  size_t n)
 {
         size_t                                  i;
@@ -29,34 +68,6 @@ void    *ft_memcpy(void *dst, const void *src,  size_t n)
                 i++;
         }
         return (d);
-}
-
-char	*ft_strjoin(char *s1, char *s2)
-{
-	char	*join;
-	size_t	len1;
-	size_t	len2;
-
-	if (!s1)
-	{
-		s1 = malloc(1);
-		if (!(s1))
-			return (NULL);
-		s1[0] = 0;
-	}
-	if (s1 || s2)
-	{
-		len1 = ft_strlen(s1);
-		len2 = ft_strlen(s2);
-		join = (char *)malloc(len1 + len2 + 1);
-		if (!join)
-			return (join);
-		ft_memcpy(join, s1, len1);
-		ft_memcpy(join + len1, s2, len2 +1);
-		free(s1);
-		return (join);
-	}
-	return (NULL);
 }
 
 char    *ft_strdup(const char *s1)
@@ -101,44 +112,6 @@ char    *ft_strchr(const char *s, int c)
         return (NULL);
 }
 
-// static char     *join(char *one, char *two, char *swap)
-// {
-//         size_t                          i;
-//         size_t                          j;
-
-//         i = 0;
-//         j = 0;
-//         while (one[i])
-//         {
-//                 swap[i] = one[i];
-//                 i++;
-//         }
-//         while (two[j])
-//         {
-//                 swap[j + i] = two[j];
-//                 j++;
-//         }
-//         swap[i + j] = '\0';
-//         return (swap);
-// }
-
-// char    *ft_strjoin(char const *s1, char const *s2)
-// {
-//         char                                    *ptr;
-//         size_t                                  totalenergie;
-//         int                                             i;
-//         int                                             j;
-
-//         // if (s1 == NULL || s2 == NULL)
-//         //         return (NULL);
-//         i = ft_strlen(s1);
-//         j = ft_strlen(s2);
-//         totalenergie = (i + j);
-//         ptr = (char *) malloc ((totalenergie + 1) * sizeof(char));
-//         if (ptr == NULL)
-//                 return (NULL);
-//         return (join((char *)s1, (char *)s2, ptr));
-// }
 
 char    *ft_substr(char const *s, unsigned int start, size_t len)
 {
@@ -165,6 +138,18 @@ char    *ft_substr(char const *s, unsigned int start, size_t len)
         }
         p[i] = '\0';
         return (p);
+}
+
+size_t  ft_count_len_line(const char *s)
+{
+        size_t                          i;
+
+        i = 0;
+        while (s[i] || s[i] != '\n')
+                i++;
+        while (s[i] || s[i] == '\n')
+                i++;
+        return (i);
 }
 
 
@@ -256,55 +241,6 @@ char    *ft_substr(char const *s, unsigned int start, size_t len)
 
 
 
-
-// static char	*diir_chii_fchiii(char *one, char *two, char *swap)
-// {
-// 	size_t				i;
-// 	size_t				j;
-
-// 	i = 0;
-// 	j = 0;
-// 	while (one[i])
-// 	{
-// 		swap[i] = one[i];
-// 		i++;
-// 	}
-// 	while (two[j])
-// 	{
-// 		swap[j + i] = two[j];
-// 		j++;
-// 	}
-// 	swap[i + j] = '\0';
-// 	return (swap);
-// }
-
-// char	*ft_strjoin(char const *s1, char const *s2)
-// {
-// 	char					*ptr;
-// 	size_t					totalenergie;
-// 	int						i;
-// 	int						j;
-
-// 	if (s1 == NULL || s2 == NULL)
-// 		return (NULL);
-// 	i = ft_strlen(s1);
-// 	j = ft_strlen(s2);
-// 	totalenergie = (i + j);
-// 	ptr = (char *) malloc ((totalenergie + 1) * sizeof(char));
-// 	if (ptr == NULL)
-// 		return (NULL);
-// 	return (diir_chii_fchiii((char *)s1, (char *)s2, ptr));
-// }
-
-// size_t	ft_strlen(const char *s)
-// {
-// 	size_t				i;
-
-// 	i = 0;
-// 	while (s[i])
-// 		i++;
-// 	return (i);
-// }
 
 // char    *ft_lkhedma(char *buf, int *ret)
 // {
