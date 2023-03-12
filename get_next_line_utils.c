@@ -145,10 +145,11 @@ size_t  ft_count_len_line(const char *s)
         size_t                          i;
 
         i = 0;
-        while (s[i] || s[i] != '\n')
+        // while (s[i] && s[i] != '\n')
+        //         i++; 
+        while (s[i] && s[i] != '\n')
                 i++;
-        while (s[i] || s[i] == '\n')
-                i++;
+        i++;
         return (i);
 }
 

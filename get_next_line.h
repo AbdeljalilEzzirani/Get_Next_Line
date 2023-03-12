@@ -14,17 +14,17 @@
 # define get_next_line_h
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 5
+# define BUFFER_SIZE 24
 #endif
 
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <stddef.h>        //for size_t
 # include <fcntl.h>
-# include <sys/types.h>
-# include <sys/stat.h>
-# include <fcntl.h>
+// # include <stddef.h>        //for size_t
+// # include <sys/types.h>
+// # include <sys/stat.h>
+// # include <fcntl.h>
 
 
 
@@ -34,8 +34,8 @@ char		    *ft_strdup(const char *s1);
 size_t		    ft_strlen(const char *s);
 char            *ft_strjoin(char const *s1, char const *s2);
 size_t          ft_count_len_line(const char *s);
-static char     *sauvgard_line(char *str);
-static char     *push_line(char *str);
-static char     *read_line(int fd, char *strstr);
+// static char     *sauvgard_line(char *str);
+// static char     *push_line(char *str);
+// static char     *read_line(int fd, char *biit_lkhziin);
 
 #endif
