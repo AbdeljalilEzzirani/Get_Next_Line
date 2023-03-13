@@ -65,18 +65,12 @@ static char	*sauvgard_line(char *str)
 	return (sauvgard);
 }
 
-
-char	*get_next_line(int fd)
+static char	*read_line(int fd, char *biit_lkhziin)
 {
-	char			*rslt;
-	static char		*biit_lkhziin;
+	// char				*biit_lkhziin;
 	char					*buf;
-	char					*tmp;
 	int						i;
 
-
-	if(fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
 	if(biit_lkhziin == NULL)
 		biit_lkhziin = ft_strdup("");
 	buf = malloc(sizeof(char *) * BUFFER_SIZE +1);
@@ -90,27 +84,105 @@ char	*get_next_line(int fd)
 			break;
 		buf[i] = '\0';
 		biit_lkhziin = ft_strjoin(biit_lkhziin, buf);
-		tmp = biit_lkhziin;
-		free(tmp);
 	}
-	free(buf);
+	return (biit_lkhziin);
+}
+
+char	*get_next_line(int fd)
+{
+	char			*rslt;
+	static char		*biit_lkhziin;
+
+	if(fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+
+	biit_lkhziin = read_line(fd, biit_lkhziin);
+
 	rslt = push_line(biit_lkhziin);
+	
 	biit_lkhziin = sauvgard_line(biit_lkhziin);
+
 	return (rslt);
 }
 
-void ff()
-{
-	system("leaks a.out");
-}
+// void ff()
+// {
+// 	system("leaks a.out");
+// }
 
-int main ()
-{
-	atexit(ff);
-	int fd;
+// int main ()
+// {
+// 	// atexit(ff);
+// 	int fd;
 
-	fd  = open("check.txt", O_RDWR);
-	printf("%s \n", 	 get_next_line(fd));
-	printf("%s \n", 	 get_next_line(fd));
-	printf("%s \n", 	 get_next_line(fd));
-}
+// 	fd  = open("check.txt", O_RDWR);
+// 	printf("%s \n", 	 get_next_line(fd));
+// 	printf("%s \n", 	 get_next_line(fd));
+// 	printf("%s \n", 	 get_next_line(fd));
+// }
+
+
+
+
+
+
+
+
+// char	*get_next_line(int fd)
+// {
+// 	char			*rslt;
+// 	static char		*biit_lkhziin;
+// 	char					*buf;
+// 	// char					*tmp;
+// 	int						i;
+
+
+// 	if(fd < 0 || BUFFER_SIZE <= 0)
+// 		return (NULL);
+// 	if(biit_lkhziin == NULL)
+// 		biit_lkhziin = ft_strdup("");
+// 	buf = malloc(sizeof(char *) * BUFFER_SIZE +1);
+// 	if (NULL == buf)
+// 		return (NULL);
+// 	i = 1;
+// 	while (i > 0 && !(ft_strchr(biit_lkhziin, '\n')))
+// 	{
+// 		i = read(fd, buf, BUFFER_SIZE);
+// 		if(i < 0)
+// 			break;
+// 		buf[i] = '\0';
+// 		biit_lkhziin = ft_strjoin(biit_lkhziin, buf);
+// 		// tmp = biit_lkhziin;
+// 		// free(tmp);
+// 	}
+// 	// free(buf);
+// 	rslt = push_line(biit_lkhziin);
+// 	biit_lkhziin = sauvgard_line(biit_lkhziin);
+// 	return (rslt);
+// }
+
+
+
+
+
+
+
+
+
+	// if(biit_lkhziin == NULL)
+	// 	biit_lkhziin = ft_strdup("");
+	// buf = malloc(sizeof(char *) * BUFFER_SIZE +1);
+	// if (NULL == buf)
+	// 	return (NULL);
+	// i = 1;
+	// while (i > 0 && !(ft_strchr(biit_lkhziin, '\n')))
+	// {
+	// 	i = read(fd, buf, BUFFER_SIZE);
+	// 	if(i < 0)
+	// 		break;
+	// 	buf[i] = '\0';
+	// 	biit_lkhziin = ft_strjoin(biit_lkhziin, buf);
+	// 	// tmp = biit_lkhziin;
+	// 	// free(tmp);
+	// }
+	// // free(buf);
