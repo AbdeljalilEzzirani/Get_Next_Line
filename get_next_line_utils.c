@@ -30,7 +30,7 @@ static char     *join(char *one, char *two, char *swap)
                 j++;
         }
         swap[i + j] = '\0';
-        return (swap);
+        return (free(one), swap);
 }
 
 char    *ft_strjoin(char const *s1, char const *s2)
@@ -81,7 +81,7 @@ char    *ft_strdup(const char *s1)
                 return (NULL);
         ft_memcpy(p, s1, size);
         p[size] = '\0';
-        return (p);
+        return ( p);
 }
 
 size_t  ft_strlen(const char *s)
@@ -122,6 +122,7 @@ size_t  ft_count_len_line(const char *s)
         //         i++; 
         while (s[i] && s[i] != '\n')
                 i++;
-        i++;
+        if (s[i] == '\n')
+                return (i + 1);
         return (i);
 }

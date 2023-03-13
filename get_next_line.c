@@ -30,6 +30,8 @@ static char	*push_line(char *str)
 		i++;
 		j++;
 	}
+	if (str[i] == '\n')
+		chereen[j] = str[i];
 	chereen[i] = '\0';
 	return (chereen);
 }
@@ -42,7 +44,7 @@ static char	*sauvgard_line(char *str)
 
 	i = ft_count_len_line(str);
 	j = ft_strlen(str);
-	sauvgard = (char *) malloc ((j - i) +1);
+	sauvgard = (char *) malloc ((j - i) + 1);
 	if (NULL == sauvgard)
 		return (NULL);
 	i = 0;
@@ -62,7 +64,7 @@ static char	*sauvgard_line(char *str)
 		}
 		i++;
 	}
-	return (sauvgard);
+	return (free(str), sauvgard);
 }
 
 static char	*read_line(int fd, char *biit_lkhziin)
@@ -75,17 +77,19 @@ static char	*read_line(int fd, char *biit_lkhziin)
 		biit_lkhziin = ft_strdup("");
 	buf = malloc(sizeof(char *) * BUFFER_SIZE +1);
 	if (NULL == buf)
-		return (NULL);
+		return (free(biit_lkhziin), NULL);
 	i = 1;
 	while (i > 0 && !(ft_strchr(biit_lkhziin, '\n')))
 	{
 		i = read(fd, buf, BUFFER_SIZE);
 		if(i < 0)
-			break;
+		{
+			return (free(biit_lkhziin), free(buf), NULL);
+		}
 		buf[i] = '\0';
 		biit_lkhziin = ft_strjoin(biit_lkhziin, buf);
 	}
-	return (biit_lkhziin);
+	return (free(buf), biit_lkhziin);
 }
 
 char	*get_next_line(int fd)
@@ -101,25 +105,24 @@ char	*get_next_line(int fd)
 	rslt = push_line(biit_lkhziin);
 	
 	biit_lkhziin = sauvgard_line(biit_lkhziin);
-
 	return (rslt);
 }
 
-// void ff()
-// {
-// 	system("leaks a.out");
-// }
+void ff()
+{
+	system("leaks a.out");
+}
 
-// int main ()
-// {
-// 	// atexit(ff);
-// 	int fd;
+int main ()
+{
+	atexit(ff);
+	int fd;
 
-// 	fd  = open("check.txt", O_RDWR);
-// 	printf("%s \n", 	 get_next_line(fd));
-// 	printf("%s \n", 	 get_next_line(fd));
-// 	printf("%s \n", 	 get_next_line(fd));
-// }
+	fd  = open("check.txt", O_RDWR);
+	printf("%s \n", 	 get_next_line(fd));
+	printf("%s \n", 	 get_next_line(fd));
+	printf("%s \n", 	 get_next_line(fd));
+}
 
 
 
