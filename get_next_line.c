@@ -63,6 +63,7 @@ static char  *sauvgard_line(char *str)
 		}
 		i++;
 	}
+	sauvgard[j] = '\0';
 	return (sauvgard);
 }
 
