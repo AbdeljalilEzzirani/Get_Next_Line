@@ -14,7 +14,7 @@
 # define get_next_line_h
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 20
+# define BUFFER_SIZE 7
 #endif
 
 # include <unistd.h>
