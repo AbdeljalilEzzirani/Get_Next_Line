@@ -52,31 +52,25 @@ static char  *sauvgard_line(char *str)
 	j = ft_strlen(str);
 	sauvgard = (char *) malloc ((j - i) + 1);
 	if (NULL == sauvgard)
-		return (NULL);
+		return (free(str) ,free(sauvgard), NULL);
+
 	i = 0;
 	j = 0;
 	while (str[i])
 	{
 		if (str[i] == '\n')
 		{
-			j = 0;
 			i++;
 			while (str[i])
-			{
-				sauvgard[j] = str[i];
-				i++;
-				j++;
-			}
+				sauvgard[j++] = str[i++];
 			break;
 		}
 		i++;
 	}
 	if (j == 0)
-		return (NULL);
+		return (free(str), free(sauvgard), NULL);
 	sauvgard[j] = '\0';
-	free(str);
-	str = NULL;
-	return (sauvgard);
+	return (free(str), sauvgard);
 }
 
 int	ft_find_slash_n(char *str)
@@ -86,7 +80,7 @@ int	ft_find_slash_n(char *str)
 	int i = 0;
 	while (str[i])
 	{
-		if (str[i] == '\n')
+		if (str[i] == '\n' || str[i] == 0)
 			return (1);
 		i++;
 	}
@@ -100,16 +94,16 @@ static char	*read_line(int fd, char *biit_lkhziin)
 
 	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (NULL == buf)
-		return (NULL);
-	i = 0;
+		return (free(buf), free(biit_lkhziin), NULL);
+	i = 1;
 	while (ft_find_slash_n(biit_lkhziin) == 0)
 	{
 		i = read(fd, buf, BUFFER_SIZE);
 		if(i < 0)
-			return (free(buf), NULL);
+			return (free(buf), free(biit_lkhziin), NULL);
+		buf[i] = '\0';
 		if (i == 0)
 			return (free(buf), biit_lkhziin);
-		buf[i] = '\0';
 		biit_lkhziin = ft_strjoin(biit_lkhziin, buf);
 	}
 	return (free(buf), biit_lkhziin);
@@ -120,259 +114,56 @@ char *get_next_line(int fd)
 	char            *rslt;
 	static char     *biit_lkhziin;
 
-	if(fd < 0 || BUFFER_SIZE <= 0)
+	if(fd < 0 || BUFFER_SIZE <= 0 || read(fd, &rslt, 0) < 0)
+	{
+		if(biit_lkhziin)
+		{
+			free(biit_lkhziin);
+			biit_lkhziin=NULL;
+		}
 		return (NULL);
+		
+	}
 	biit_lkhziin = read_line(fd, biit_lkhziin);
 	if(!biit_lkhziin)
 		return (NULL);
 	rslt = push_line(biit_lkhziin);
+	if(!rslt)
+		return (NULL);
 	biit_lkhziin = sauvgard_line(biit_lkhziin);
 	return (rslt);
 }
 
-void	leaks(){system("leaks a.out");}
+// void	leaks(){system("leaks a.out");}
 
-
-
-int main()
-{
-	atexit(leaks);
-	int fd = open("check.txt", O_RDWR);
-	// char *str;
-
-	// str = get_next_line(fd);
-	// while (str != NULL)
-	// {
-	// 	printf("%s", str);
-	// 	str = get_next_line(fd);
-	// }
-	printf("||%s|| \n", get_next_line(fd));
-	printf("||%s|| \n", get_next_line(fd));
-	printf("||%s|| \n", get_next_line(fd));
-	printf("||%s|| \n", get_next_line(fd));
-	printf("||%s|| \n", get_next_line(fd));
-	printf("||%s|| \n", get_next_line(fd));
-	printf("||%s|| \n", get_next_line(fd));
-	printf("||%s|| \n", get_next_line(fd));
-	printf("||%s|| \n", get_next_line(fd));
-	printf("||%s|| \n", get_next_line(fd));
-	printf("||%s|| \n", get_next_line(fd));
-	printf("||%s|| \n", get_next_line(fd));
-	printf("||%s|| \n", get_next_line(fd));
-	printf("||%s|| \n", get_next_line(fd));
-	printf("||%s|| \n", get_next_line(fd));
-	printf("||%s|| \n", get_next_line(fd));
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// static char	*push_line(char *str)
+// int main()
 // {
-// 	int				i;
-// 	int				j;
-// 	char			*chereen;
+// 	int fd = open("check.txt", O_RDWR);
+// 	char *str;
 
-// 	i = ft_count_len_line(str);
-// 	printf("|count line =>>>>>>%d|\n", i);
-// 	chereen = (char *) malloc ((i + 2) * sizeof(char));
-// 	if (NULL == chereen)
-// 		return (NULL);
-// 	i = 0;
-// 	j = 0;
-// 	while (str[i] && str[i] != '\n')
+// 	str = get_next_line(fd);
+// 	while (str != NULL)
 // 	{
-// 		chereen[j] = str[i];
-// 		i++;
-// 		j++;
+// 		printf("%s", str);
+// 		free(str);
+// 		str = get_next_line(fd);
 // 	}
-// 	if (str[i] == '\n'){
-// 		chereen[j] = str[i];
-// 		chereen[j + 1] = '\0';
-// 	}
-// 	else
-// 		chereen[j] = '\0';
-// 	printf("|chereen=>>>>>>> %s|\n", chereen);
-// 	return (chereen);
-// }
 
-// static char	*sauvgard_line(char *str)
-// {
-// 	int							i;
-// 	int							j;
-// 	char					*sauvgard;
-
-// 	i = ft_count_len_line(str);
-// 	j = ft_strlen(str);
-// 	sauvgard = (char *) malloc ((j - i) + 1);
-// 	if (NULL == sauvgard)
-// 		return (NULL);
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '\n')
-// 		{
-// 			j = 0;
-// 			i++;
-// 			while (str[i])
-// 			{
-// 				sauvgard[j] = str[i];
-// 				i++;
-// 				j++;
-// 			}
-// 			break;
-// 		}
-// 		i++;
-// 	}
-// 	return (sauvgard);
-// }
-
-// static char	*read_line(int fd, char *biit_lkhziin)
-// {
-// 	char					*buf;
-// 	int						i;
-
-// 	if(biit_lkhziin == NULL)
-// 		biit_lkhziin = ft_strdup("");
-// 	buf = (char *) malloc(sizeof(char) * BUFFER_SIZE + 1);
-// 	if (!buf)
-// 		return (free(biit_lkhziin), NULL);
-// 	i = 1;
-
-// 	while (i > 0 && !(ft_strchr(biit_lkhziin, '\n')))
-// 	{
-// 		i = read(fd, buf, BUFFER_SIZE);
-// 		if(i == -1)
-// 		{
-// 			return (NULL);
-// 		}
-// 		buf[i] = '\0';
-// 		biit_lkhziin = ft_strjoin(biit_lkhziin, buf);
-// 		printf("|buff =>>>>>>>%s|\n", buf);
-// 		printf("|biit =>>>>>>>%s|\n", biit_lkhziin);
-// 	}
-// 	return (biit_lkhziin);
-// }
-
-// char	*get_next_line(int fd)
-// {
-// 	char			*rslt;
-// 	static char		*biit_lkhziin;
-
-// 	if(fd < 0 || BUFFER_SIZE <= 0 )
-// 		return (NULL);
-// 	biit_lkhziin = read_line(fd, biit_lkhziin);
-// 	if(!biit_lkhziin)
-// 		return (NULL);
-// 	// rslt = push_line(biit_lkhziin);
-
-// 	// biit_lkhziin = sauvgard_line(biit_lkhziin);
-// 	return (biit_lkhziin);
-// }
-
-// // void	leaks(){system("leaks a.out");}
-
-// int	main ()
-// {
-// 	int			fd;
-
-// 	fd  = open("check.txt", O_RDWR);
-// 	printf("|get_next_line    /%s/|", get_next_line(fd));
-// 	// 	printf("|get_next_line    /%s/|", get_next_line(fd));
-// 	// 	printf("|get_next_line    /%s/|", get_next_line(fd));
-// 	// 	printf("|get_next_line    /%s/|", get_next_line(fd));
-// 	// 	printf("|get_next_line    /%s/|", get_next_line(fd));
-// 	// 	printf("|get_next_line    /%s/|", get_next_line(fd));
-// 	// 	printf("|get_next_line    /%s/|", get_next_line(fd));
-// 	// 	printf("|get_next_line    /%s/|", get_next_line(fd));
-// 	// 	printf("|get_next_line    /%s/|", get_next_line(fd));
-// }
-
-
-// // void	leaks(){system("leaks a.out");}
-
-// //  int main ()
-// // {
-// 	atexit(leaks);
-// 	int fd;
-
-// 	fd  = open("check.txt", O_RDWR);
-// 	//get_next_line(fd);
-// 	char *str = get_next_line(fd);
-// 	printf("%s \n", str);
-// 	free(str);
-// 	str = get_next_line(fd);
-// 	printf("%s \n", str);
-// 	free(str);
-// 	str = get_next_line(fd);
-// 	printf("%s \n", str);
-// 	free(str);
-// 	str = get_next_line(fd);
-// 	printf("%s \n", str);
-// 	free(str);
-// 	str = get_next_line(fd);
-// 	printf("%s \n", str);
-// 	free(str);
+// // 	// printf("||%s|| \n", get_next_line(fd));
+// // 	// printf("||%s|| \n", get_next_line(fd));
+// // 	// printf("||%s|| \n", get_next_line(fd));
+// // 	// printf("||%s|| \n", get_next_line(fd));
+// // 	// printf("||%s|| \n", get_next_line(fd));
+// // 	// printf("||%s|| \n", get_next_line(fd));
+// // 	// printf("||%s|| \n", get_next_line(fd));
+// // 	// printf("||%s|| \n", get_next_line(fd));
+// // 	// printf("||%s|| \n", get_next_line(fd));
+// // 	// printf("||%s|| \n", get_next_line(fd));
+// // 	// printf("||%s|| \n", get_next_line(fd));
+// // 	// printf("||%s|| \n", get_next_line(fd));
+// // 	// printf("||%s|| \n", get_next_line(fd));
+// // 	// printf("||%s|| \n", get_next_line(fd));
+// // 	// printf("||%s|| \n", get_next_line(fd));
+// // 	// printf("||%s|| \n", get_next_line(fd));
 
 // }
-
-

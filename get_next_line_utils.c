@@ -16,6 +16,7 @@ static char     *join(char *one, char *two, char *swap)
 {
         size_t                          i;
         size_t                          j;
+
         i = 0;
         j = 0;
         while (one[i])
@@ -41,36 +42,25 @@ char    *ft_strjoin(char *s1, char *s2)
         int                                             i;
         int                                             j;
 
-        if (s1 == NULL)
-                s1 = ft_strdup("");
-        if (s2 == NULL)
+        // if (s1 == NULL)
+        //         s1 = ft_strdup("");
+        // if (s2 == NULL)
+        //         return (free(s1), NULL);
+        if (!s1 && !s2)
                 return (NULL);
+        if (s1 == NULL)
+                return(ft_strdup(s2));
+        if (s2 == NULL)
+                return (ft_strdup(s1));
         i = ft_strlen(s1);
         j = ft_strlen(s2);
         totalenergie = (i + j);
         ptr = (char *) malloc ((totalenergie + 1) * sizeof(char));
         if (ptr == NULL)
-                return (NULL);
+                return (free(s1), NULL);
         return (join(s1, s2, ptr));
 }
 
-void    *ft_memcpy(void *dst, const void *src,  size_t n)
-{
-        size_t                                  i;
-        char                                    *d;
-        const char                              *s;
-        i = 0;
-        s = src;
-        d = dst;
-        if (s == NULL && d == NULL)
-                return (NULL);
-        while (i < n)
-        {
-                d[i] = s[i];
-                i++;
-        }
-        return (d);
-}
 char    *ft_strdup(const char *s1)
 {
         char                    *p;
@@ -79,8 +69,13 @@ char    *ft_strdup(const char *s1)
         p = (char *) malloc (sizeof(char) * size + 1);
         if (p == NULL)
                 return ( NULL);
-        ft_memcpy(p, s1, size);
-        p[size] = '\0';
+        int i = 0;
+        while (s1[i])
+        {
+                p[i] = s1[i];
+                i++;
+        }
+        p[i] = '\0';
         return (p);
 }
 
@@ -91,23 +86,6 @@ size_t  ft_strlen(const char *s)
         while (s[i])
                 i++;
         return (i);
-}
-
-char    *ft_strchr(const char *s, int c)
-{
-        int             i;
-        if (s == NULL)
-                return (NULL);
-        i = 0;
-        while (s[i])
-        {
-                if ((char )c == s[i])
-                        return ((char *)&s[i]);
-                i++;
-        }
-        if (s[i] == (char )c)
-                return ((char *)&s[i]);
-        return (NULL);
 }
 
 size_t  ft_count_len_line(const char *s)
