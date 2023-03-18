@@ -6,23 +6,23 @@
 /*   By: abez-zir <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 21:09:14 by abez-zir          #+#    #+#             */
-/*   Updated: 2023/03/15 00:15:02 by abez-zir         ###   ########.fr       */
+/*   Updated: 2023/03/18 22:29:15 by abez-zir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char  *push_line(char *str)
+static char	*push_line(char *str)
 {
-	int             i;
-	int             j;
-	char            *chereen;
+	int				i;
+	int				j;
+	char			*chereen;
 
 	i = ft_count_len_line(str);
 	if (ft_find_slash_n(str) == 0)
 		i++;
 	else
-		i+=2;
+		i += 2;
 	chereen = (char *) malloc (i * sizeof(char));
 	if (NULL == chereen)
 		return (NULL);
@@ -40,44 +40,39 @@ static char  *push_line(char *str)
 	return (chereen);
 }
 
-static char  *sauvgard_line(char *str)
+static char	*sauvgard_line(char *str)
 {
-	int                         i;
-	int                         j;
-	char                    *sauvgard;
-
-	i = ft_count_len_line(str);
-	if (ft_find_slash_n(str) == 1)
-		i++;
-	j = ft_strlen(str);
-	sauvgard = (char *) malloc ((j - i) + 1);
-	if (NULL == sauvgard)
-		return (free(str) ,free(sauvgard), NULL);
+	int							i;
+	int							j;
+	char						*sauvgard;
 
 	i = 0;
+	sauvgard = (char *) malloc ((ft_strlen(str) - ft_count_len_line(str)) + 1);
+	if (NULL == sauvgard)
+		return (free(str), free(sauvgard), NULL);
+	i = 0;
 	j = 0;
+	while (str[i] && str[i] != '\n')
+		i++;
+	if (str[i] == '\n')
+		i++;
 	while (str[i])
 	{
-		if (str[i] == '\n')
-		{
-			i++;
-			while (str[i])
 				sauvgard[j++] = str[i++];
-			break;
-		}
-		i++;
 	}
+	sauvgard[j] = '\0';
 	if (j == 0)
 		return (free(str), free(sauvgard), NULL);
-	sauvgard[j] = '\0';
-	return (free(str), sauvgard);
+	return (sauvgard[j] = '\0', free(str), sauvgard);
 }
 
 int	ft_find_slash_n(char *str)
 {
+	int					i;
+
+	i = 0;
 	if (!str)
 		return (0);
-	int i = 0;
 	while (str[i])
 	{
 		if (str[i] == '\n' || str[i] == 0)
@@ -89,8 +84,8 @@ int	ft_find_slash_n(char *str)
 
 static char	*read_line(int fd, char *biit_lkhziin)
 {
-	char                    *buf;
-	int                     i;
+	char					*buf;
+	int						i;
 
 	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (NULL == buf)
@@ -99,7 +94,7 @@ static char	*read_line(int fd, char *biit_lkhziin)
 	while (ft_find_slash_n(biit_lkhziin) == 0)
 	{
 		i = read(fd, buf, BUFFER_SIZE);
-		if(i < 0)
+		if (i < 0)
 			return (free(buf), free(biit_lkhziin), NULL);
 		buf[i] = '\0';
 		if (i == 0)
@@ -109,26 +104,25 @@ static char	*read_line(int fd, char *biit_lkhziin)
 	return (free(buf), biit_lkhziin);
 }
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-	char            *rslt;
-	static char     *biit_lkhziin;
+	char					*rslt;
+	static char				*biit_lkhziin;
 
-	if(fd < 0 || BUFFER_SIZE <= 0 || read(fd, &rslt, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &rslt, 0) < 0)
 	{
-		if(biit_lkhziin)
+		if (biit_lkhziin)
 		{
 			free(biit_lkhziin);
-			biit_lkhziin=NULL;
+			biit_lkhziin = NULL;
 		}
 		return (NULL);
-		
 	}
 	biit_lkhziin = read_line(fd, biit_lkhziin);
-	if(!biit_lkhziin)
+	if (!biit_lkhziin)
 		return (NULL);
 	rslt = push_line(biit_lkhziin);
-	if(!rslt)
+	if (!rslt)
 		return (NULL);
 	biit_lkhziin = sauvgard_line(biit_lkhziin);
 	return (rslt);
