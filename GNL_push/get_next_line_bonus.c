@@ -104,7 +104,7 @@ static char	*read_line(int fd, char *biit_lkhziin)
 	return (free(buf), biit_lkhziin);
 }
 
-char	*get_next_line_bonus(int fd)
+char	*get_next_line(int fd)
 {
 	char					*rslt;
 	static char				*biit_lkhziin[10240];
@@ -127,34 +127,3 @@ char	*get_next_line_bonus(int fd)
 	biit_lkhziin[fd] = sauvgard_line(biit_lkhziin[fd]);
 	return (rslt);
 }
-
-// int main()
-// {
-// 	int fd0 = open ("check.txt", O_RDONLY);
-// 	int fd1 = open ("test.txt", O_RDONLY);
-// 	// char *src;
-// 	// char *dst;
-
-// 	// src = get_next_line_bonus(fd[0]);
-// 	// dst = get_next_line_bonus(fd0[0]);
-// 	// printf("%s \n", src);
-// 	// printf("%s \n", dst);
-// 	printf("||%s|| \n", get_next_line_bonus(fd0));
-// 	printf("||%s|| \n", get_next_line_bonus(fd1));
-// 	printf("||%s|| \n", get_next_line_bonus(fd0));
-// 	printf("||%s|| \n", get_next_line_bonus(fd1));
-// 	printf("||%s|| \n", get_next_line_bonus(fd0));
-// 	printf("||%s|| \n", get_next_line_bonus(fd1));
-// 	printf("||%s|| \n", get_next_line_bonus(fd0));
-// 	printf("||%s|| \n", get_next_line_bonus(fd1));
-// 	printf("||%s|| \n", get_next_line_bonus(fd0));
-// 	printf("||%s|| \n", get_next_line_bonus(fd1));
-// 	printf("||%s|| \n", get_next_line_bonus(fd0));
-// 	printf("||%s|| \n", get_next_line_bonus(fd1));
-// 	// printf("||%s|| \n", get_next_line_bonus(fd0));
-// 	// printf("||%s|| \n", get_next_line_bonus(fd0));
-// 	// printf("||%s|| \n", get_next_line_bonus(fd0));
-// 	// printf("||%s|| \n", get_next_line_bonus(fd0));
-// 	close(fd0);
-// 	close(fd1);
-// }
